@@ -9,11 +9,12 @@ import { fetchCoffeeStores } from "../../lib/coffee-stores";
 
 export async function getStaticProps({ params }) {
   const coffeeStores = await fetchCoffeeStores();
+  const findCoffeeStoreById = coffeeStores.find(
+    (coffeeStore) => coffeeStore.id.toString() === params.id
+  );
   return {
     props: {
-      coffeeStore: coffeeStores.find(
-        (coffeeStore) => coffeeStore.fsq_id == params.id
-      ),
+      coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {},
     },
   };
 }
@@ -24,7 +25,7 @@ export async function getStaticPaths() {
   const paths = coffeeStores.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.fsq_id.toString(),
+        id: coffeeStore.id.toString(),
       },
     };
   });
@@ -39,7 +40,7 @@ export default function CoffeeStore(props) {
   if (router.isFallback) {
     return <div>Loading</div>;
   }
-  const { location, neighbourhood, name, imgUrl } = props.coffeeStore;
+  const { address, neighborhood, name, imgUrl } = props.coffeeStore;
 
   function handleUpvoteButton() {
     console.log("handle upVote");
@@ -53,7 +54,7 @@ export default function CoffeeStore(props) {
       <div className={styles.container}>
         <div className={styles.col1}>
           <div className={styles.backToHomeLink}>
-            <Link href="/">Back to Home</Link>
+            <Link href="/">← Back to Home</Link>
           </div>
           <div className={styles.nameWrapper}>
             <p className={styles.name}>{name}</p>
@@ -67,14 +68,18 @@ export default function CoffeeStore(props) {
           />
         </div>
         <div className={cls("glass", styles.col2)}>
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/places.svg" width="24" height="24" />
-            <p className={styles.text}>{location.address}</p>
-          </div>
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/nearMe.svg" width="24" height="24" />
-            <p className={styles.text}>{location.neighborhood[0]}</p>
-          </div>
+          {address && (
+            <div className={styles.iconWrapper}>
+              <Image src="/static/icons/places.svg" width="24" height="24" />
+              <p className={styles.text}>{address}</p>
+            </div>
+          )}
+          {neighborhood && (
+            <div className={styles.iconWrapper}>
+              <Image src="/static/icons/nearMe.svg" width="24" height="24" />
+              <p className={styles.text}>{neighborhood}</p>
+            </div>
+          )}
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/star.svg" width="24" height="24" />
             <p className={styles.text}>1</p>
