@@ -8,6 +8,7 @@ export default function Card(props) {
       <div className={cls("glass", styles.container)}>
         <h2 className={styles.cardHeader}>{props.name}</h2>
         <Image
+          alt=""
           className={styles.cardImg}
           src={props.imgUrl}
           width={260}

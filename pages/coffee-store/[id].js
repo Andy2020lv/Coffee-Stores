@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import coffeeStoreData from "../../data/5.1 coffee-stores.json";
 import Head from "next/head";
 import styles from "../../styles/coffee-store.module.css";
 import Image from "next/image";
@@ -9,7 +8,7 @@ import { fetchCoffeeStores } from "../../lib/coffee-stores";
 import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../store/store-context";
 import { isEmpty } from "../../utils";
-
+import useSWR from "swr";
 export async function getStaticProps({ params }) {
   const coffeeStores = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStores.find(
@@ -50,7 +49,8 @@ export default function CoffeeStore(initialProps) {
   } = useContext(StoreContext);
   const handleCreateCoffeeStore = async (coffeeStore) => {
     try {
-      const { id, name, voting, imgUrl, address, neighborhood } = coffeeStore;
+      const { id, name, imgUrl, address, neighborhood } = coffeeStore;
+
       const response = await fetch("/api/createCoffeeStore", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,8 +63,7 @@ export default function CoffeeStore(initialProps) {
           imgUrl,
         }),
       });
-      const dbCoffeeStores = response.json();
-      console.log({ dbCoffeeStores });
+      const dbCoffeeStores = await response.json();
     } catch (err) {
       console.error("Error creating coffee store", err);
     }
@@ -85,10 +84,41 @@ export default function CoffeeStore(initialProps) {
     }
   }),
     [id, initialProps, initialProps.coffeeStore];
-  const { address, neighborhood, name, imgUrl } = coffeeStore;
+  const { address, neighbourhood, name, imgUrl } = coffeeStore;
+  const [voting, setVoting] = useState(0);
 
-  function handleUpvoteButton() {
-    console.log("handle upVote");
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setCoffeeStore(data[0]);
+      setVoting(data[0].voting);
+    }
+  }, [data]);
+
+  // Increment voting count
+  async function handleUpvoteButton() {
+    try {
+      const response = await fetch("/api/favouriteCoffeeStoreById", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+      const dbCoffeeStores = response.json();
+      if (dbCoffeeStores && dbCoffeeStores.length > 0) {
+        let count = voting + 1;
+        setVoting(count);
+      }
+    } catch (err) {
+      console.error("Error upvoting the coffee store", err);
+    }
+  }
+
+  if (error) {
+    return <div>Something went wrong retrieving coffee store page</div>;
   }
 
   return (
@@ -115,19 +145,29 @@ export default function CoffeeStore(initialProps) {
         <div className={cls("glass", styles.col2)}>
           {address && (
             <div className={styles.iconWrapper}>
-              <Image src="/static/icons/places.svg" width="24" height="24" />
+              <Image
+                alt=""
+                src="/static/icons/places.svg"
+                width="24"
+                height="24"
+              />
               <p className={styles.text}>{address}</p>
             </div>
           )}
-          {neighborhood && (
+          {neighbourhood && (
             <div className={styles.iconWrapper}>
-              <Image src="/static/icons/nearMe.svg" width="24" height="24" />
-              <p className={styles.text}>{neighborhood}</p>
+              <Image
+                alt=""
+                src="/static/icons/nearMe.svg"
+                width="24"
+                height="24"
+              />
+              <p className={styles.text}>{neighbourhood}</p>
             </div>
           )}
           <div className={styles.iconWrapper}>
-            <Image src="/static/icons/star.svg" width="24" height="24" />
-            <p className={styles.text}>1</p>
+            <Image alt="" src="/static/icons/star.svg" width="24" height="24" />
+            <p className={styles.text}>{voting}</p>
           </div>
 
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>

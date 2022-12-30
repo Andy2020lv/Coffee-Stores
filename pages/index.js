@@ -24,11 +24,9 @@ export default function Home(props) {
     locationErrorMessage,
     isFindingLocation,
   } = useTrackLocation();
-  // const [coffeeStores, setCoffeeStores] = useState("");
   const [coffeeStoresError, setCoffeeStoresError] = useState(null);
   const { dispatch, state } = useContext(StoreContext);
   const { coffeeStores, latLong } = state;
-  // console.log({ latLong, locationErrorMessage });
   useEffect(() => {
     async function fetchData() {
       if (latLong) {
@@ -45,11 +43,7 @@ export default function Home(props) {
             },
           });
           setCoffeeStoresError("");
-
-          console.log(coffeeStores);
-          // console.log({ fetchedCoffeeStores });
         } catch (error) {
-          console.log({ error });
           setCoffeeStoresError(error.message);
         }
       }
@@ -58,7 +52,6 @@ export default function Home(props) {
   }, [latLong]);
 
   function handleOnBannerBtnClick() {
-    // console.log("Hi banner button");
     handleTrackLocation();
   }
   return (
@@ -79,7 +72,7 @@ export default function Home(props) {
         )}
         {coffeeStoresError && <p>Something went wrong: {coffeeStoresError}</p>}
         <div className={styles.coffeeImg}>
-          <Image src="/static/coffee.png" width={500} height={250} />
+          <Image alt="" src="/static/coffee.png" width={500} height={250} />
         </div>
         <div className={styles.sectionWrapper}>
           {coffeeStores.length > 0 && (
