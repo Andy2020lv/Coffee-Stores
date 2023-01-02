@@ -39,11 +39,11 @@ export async function getStaticPaths() {
 
 export default function CoffeeStore(initialProps) {
   const router = useRouter();
-  if (router.isFallback) {
-    return <div>Loading</div>;
-  }
+
   const id = router.query.id;
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+  const [coffeeStore, setCoffeeStore] = useState(
+    initialProps.coffeeStore || {}
+  );
   const {
     state: { coffeeStores },
   } = useContext(StoreContext);
@@ -96,6 +96,10 @@ export default function CoffeeStore(initialProps) {
       setVoting(data[0].voting);
     }
   }, [data]);
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
 
   // Increment voting count
   async function handleUpvoteButton() {
