@@ -82,7 +82,7 @@ export default function CoffeeStore(initialProps) {
     } else {
       handleCreateCoffeeStore(initialProps.coffeeStore);
     }
-  }),
+  }, [, initialProps.coffeeStore, coffeeStores, id]),
     [id, initialProps, initialProps.coffeeStore];
   const { address, neighbourhood, name, imgUrl } = coffeeStore;
   const [voting, setVoting] = useState(0);

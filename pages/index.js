@@ -49,7 +49,7 @@ export default function Home(props) {
       }
     }
     fetchData();
-  }, [latLong]);
+  }, [latLong, dispatch]);
 
   function handleOnBannerBtnClick() {
     handleTrackLocation();
