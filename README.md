@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Read Me Template
 
-## Getting Started
+![Project Image](https://i.imgur.com/kdYUK7m.png)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Table of Contents
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Description](#description)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- [Author Info](#author-info)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+---
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Description
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This NextJS app will help users find coffee stores near their current location. It will use the Unsplash Images API to display beautiful images of coffee, and the Foursquare Locations API to find actual coffee stores in the area. The app will store all the data about the coffee stores in an Airtable database, making it easy to retrieve and display the information to the user.
 
-## Learn More
+#### Technologies
 
-To learn more about Next.js, take a look at the following resources:
+- NextJS
+- Airtable
+- Unsplash and Foursquare API's
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[Back To The Top](#read-me-template)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Author Info
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Website - [Andy Hernandez](https://andyhernandez.netlify.app/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[Back To The Top](#read-me-template)
